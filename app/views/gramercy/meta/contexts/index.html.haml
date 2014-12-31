@@ -1,7 +1,21 @@
 %h1
-  Contexts
+  Contexts (#{@contexts.to_a.count})
 
-- @contexts.each do |context|
+= link_to "Add Context", new_gramercy_meta_context_path, class: "pull-right btn btn-primary"
 
-  %div
-    = link_to context.name, context
+%table.table.table-striped
+  %thead
+    %tr
+      %th Name
+      %th Roots
+      %th
+  %tbody
+    - @contexts.each do |context|
+      %tr
+        %td
+          = link_to context.name, context
+        %td
+          = context.roots.count
+        %td
+          .pull-right
+            = link_to 'Destroy', context, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'

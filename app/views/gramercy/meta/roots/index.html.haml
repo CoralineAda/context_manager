@@ -1,0 +1,21 @@
+%h1
+  Roots (#{@roots.to_a.count})
+
+= link_to "Add Root", new_gramercy_meta_root_path, class: "pull-right btn btn-primary"
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Base Form
+      %th Contexts
+      %th
+  %tbody
+    - @roots.each do |root|
+      %tr
+        %td
+          = link_to root.base_form, root
+        %td
+          = root.contexts.map(&:name) * ', '
+        %td
+          .pull-right
+            = link_to 'Destroy', root, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'

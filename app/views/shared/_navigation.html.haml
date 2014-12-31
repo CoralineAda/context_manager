@@ -1,0 +1,14 @@
+.navbar.navbar-default{role: 'navigation'}
+  .container
+    .navbar-header
+      %a.navbar-brand{href: "/"}
+        Gramercy Context Manager
+
+    .collapse.navbar-collapse
+      %ul.nav.navbar-nav
+        %li
+          =link_to "Contexts", gramercy_meta_contexts_path
+        %li
+          =link_to "Roots", gramercy_meta_roots_path
+        %li
+          =link_to "Parser", new_parser_path

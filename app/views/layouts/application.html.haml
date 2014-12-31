@@ -6,4 +6,8 @@
     = javascript_include_tag 'application'
     = csrf_meta_tags
   %body
-    = yield
+    = render 'shared/navigation'
+    %div#main-container.container
+      .row
+        .col-xs-9
+          = yield

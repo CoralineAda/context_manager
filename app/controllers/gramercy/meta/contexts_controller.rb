@@ -2,17 +2,44 @@ module Gramercy
   module Meta
     class ContextsController < ApplicationController
 
+      before_filter :scope_context, except: [:index, :create, :new]
       def index
         @contexts = Gramercy::Meta::Context.all.order(name: :asc)
       end
 
+      def new
+        @context = Gramercy::Meta::Context.new
+      end
+
+      def create
+        if context = Gramercy::Meta::Context.create!(context_params)
+          redirect_to gramercy_meta_context_url(context)
+        else
+          render :new
+        end
+      end
+
+      def destroy
+        @context.destroy
+        redirect_to gramercy_meta_contexts_url
+      end
+
       def show
-        @context = Gramercy::Meta::Context.find(params[:id])
-        @roots = @context.roots.order(base_form: :asc).each_with_rel.map{|n, r| n.positivity = r.positivity; n}.flatten
+        @roots = @context.roots.each_with_rel.map{|n, r| n.positivity = r.positivity; n}.flatten.sort_by(&:positivity)
       end
 
       def edit
         @context = Gramercy::Meta::Context.find(params[:id])
+      end
+
+      private
+
+      def scope_context
+        @context = Gramercy::Meta::Context.find(params[:id])
+      end
+
+      def context_params
+        params.require(:gramercy_meta_context).permit(:name)
       end
 
     end

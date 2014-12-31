@@ -1,21 +1,28 @@
 %h1
-  = link_to "Contexts", gramercy_meta_contexts_path
-  |
   = @context.name
-  = link_to :edit, edit_gramercy_meta_context_path(@context)
 
 .roots
-  %h2 Roots
-  %ul
-    - @roots.each do |root|
-      %li
-        = "#{root.base_form} (#{root.positivity})"
 
-.root_form
-
-  %h2 Add Root
   = form_for(Gramercy::Meta::Root.new) do |f|
-    = hidden_field_tag :context_id, @context.id
-    = f.text_field :base_form, placeholder: 'base form'
-    = text_field_tag :positivity, nil, placeholder: 'positivity'
-    = f.submit "Add Root"
+    %table.table.table-striped.table-hover
+      %thead
+        %tr
+          %th Root
+          %th Positivity
+      %tbody
+        - @roots.each do |root|
+          %tr
+            %td
+              = root.base_form
+            %td
+              = root.positivity > 0 ? "+#{root.positivity}" : root.positivity
+            %td
+        %tr.active
+          %td
+            = hidden_field_tag :context_id, @context.id
+            = f.text_field :base_form, placeholder: 'base form'
+          %td
+            = text_field_tag :positivity, nil, placeholder: 'positivity'
+          %td
+            .pull-right
+              = f.submit "Add Root", class: "btn-small"

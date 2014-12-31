@@ -2,6 +2,10 @@ module Gramercy
   module Meta
     class RootsController < ApplicationController
 
+      def index
+        @roots = Gramercy::Meta::Root.all.order(base_form: :asc)
+      end
+
       def create
         root = Gramercy::Meta::Root.find_or_create_by(base_form: root_params[:base_form])
         context = Gramercy::Meta::Context.find(params[:context_id])
