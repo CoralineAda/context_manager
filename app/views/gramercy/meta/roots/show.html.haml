@@ -31,14 +31,15 @@
       %th.col-md-3 Base Form
       %th.col-md-3
   %tbody
-    - Gramercy::Meta::Root::PARTS_OF_SPEECH.each do |part_of_speech|
-      - @root.send(part_of_speech).each do |form|
-        %tr
-          %td
-            = part_of_speech.singularize
-          %td
-            = form.base_form
-          %td
+    - @root.forms.each do |form|
       %tr
         %td
-          = link_to "Add New", edit_part_of_speech_path(1)
+          = form.type
+        %td
+          = form.base_form
+        %td
+    %tr
+      %td
+        = link_to "Add New", edit_part_of_speech_path(root_base_form: @root.base_form, id: 1)
+
+
