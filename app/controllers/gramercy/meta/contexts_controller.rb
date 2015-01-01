@@ -2,13 +2,9 @@ module Gramercy
   module Meta
     class ContextsController < ApplicationController
 
-      before_filter :scope_context, except: [:index, :create, :new]
+      before_filter :scope_context, only: [:edit, :show]
       def index
         @contexts = Gramercy::Meta::Context.all.order(name: :asc)
-      end
-
-      def new
-        @context = Gramercy::Meta::Context.new
       end
 
       def create
@@ -26,10 +22,6 @@ module Gramercy
 
       def show
         @roots = @context.roots.each_with_rel.map{|n, r| n.positivity = r.positivity; n}.flatten.sort_by(&:positivity)
-      end
-
-      def edit
-        @context = Gramercy::Meta::Context.find(params[:id])
       end
 
       private

@@ -6,9 +6,9 @@
 
     .collapse.navbar-collapse
       %ul.nav.navbar-nav
-        %li
-          =link_to "Contexts", gramercy_meta_contexts_path
-        %li
-          =link_to "Roots", gramercy_meta_roots_path
-        %li
-          =link_to "Parser", new_parser_path
+        %li{class: controller.controller_name.eql?('contexts') ? "active" : ""}
+          = link_to "Contexts", gramercy_meta_contexts_path
+        %li{class: controller.controller_name.eql?('roots') ? "active" : ""}
+          = link_to "Roots", gramercy_meta_roots_path
+        %li{class: controller.controller_name.eql?('parsers') ? "active" : ""}
+          = link_to "Parser", new_parser_path

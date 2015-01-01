@@ -1,5 +1,7 @@
 %h1
   = @context.name
+  .pull-right.small
+    context
 
 .roots
 
@@ -10,13 +12,6 @@
           %th Root
           %th Positivity
       %tbody
-        - @roots.each do |root|
-          %tr
-            %td
-              = root.base_form
-            %td
-              = root.positivity > 0 ? "+#{root.positivity}" : root.positivity
-            %td
         %tr.active
           %td
             = hidden_field_tag :context_id, @context.id
@@ -26,3 +21,10 @@
           %td
             .pull-right
               = f.submit "Add Root", class: "btn-small"
+        - @roots.each do |root|
+          %tr
+            %td
+              = link_to root.base_form, gramercy_meta_root_path(root)
+            %td
+              = root.positivity > 0 ? "+#{root.positivity}" : root.positivity
+            %td

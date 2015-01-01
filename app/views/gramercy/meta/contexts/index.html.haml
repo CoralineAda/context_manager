@@ -1,21 +1,32 @@
 %h1
-  Contexts (#{@contexts.to_a.count})
+  contexts
+  .pull-right.small
+    #{@contexts.to_a.count} items
 
-= link_to "Add Context", new_gramercy_meta_context_path, class: "pull-right btn btn-primary"
+= form_for(Gramercy::Meta::Context.new) do |f|
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th Name
-      %th Roots
-      %th
-  %tbody
-    - @contexts.each do |context|
+  %table.table.table-striped
+    %thead
       %tr
+        %th Name
+        %th Roots
+        %th
+    %tbody
+      %tr.active
         %td
-          = link_to context.name, context
+          = f.text_field :name, placeholder: 'context name'
         %td
-          = context.roots.count
         %td
           .pull-right
-            = link_to 'Destroy', context, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'
+            = f.submit "Create", class: "btn btn-default btn-xs", style: "width: 75px"
+
+      - @contexts.each do |context|
+        %tr
+          %td
+            = link_to context.name, context
+          %td
+            = context.roots.count
+          %td
+            .pull-right
+              = link_to 'Destroy', context, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs', style: "width: 75px"
+

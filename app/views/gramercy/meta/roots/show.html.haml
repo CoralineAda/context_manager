@@ -1,0 +1,25 @@
+%h1
+  = @root.base_form
+  .pull-right.small
+    root
+
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th Context
+      %th Synonyms
+      %th Antonyms
+
+  %tbody
+    - @root.contexts.each do |context|
+      %tr.active
+        %td
+          = link_to context.name, gramercy_meta_context_path(context)
+        %td
+          - @root.synonyms_in_context(context).to_a.each do |word|
+            = link_to word.base_form, gramercy_meta_root_path(word)
+            %br
+        %td
+          - @root.antonyms_in_context(context).to_a.each do |word|
+            = link_to word.base_form, gramercy_meta_root_path(word)
+            %br

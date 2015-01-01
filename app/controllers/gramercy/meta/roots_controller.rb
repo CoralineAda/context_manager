@@ -16,6 +16,10 @@ module Gramercy
         end
       end
 
+      def show
+        @root = Gramercy::Meta::Root.find(params[:id])
+      end
+
       private
 
       def root_params

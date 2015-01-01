@@ -1,42 +1,44 @@
 %h1
-  Parser Test
+  parser
 
-= form_for(@parser, url: parsers_path) do |f|
-  = f.text_field :text, placeholder: 'sentence', style: "width: 500px;"
-  .pull-right
-  = f.submit "Parse", class: "btn-small"
+%br.clear
+
+.well
+  = form_for(@parser, url: parsers_path) do |f|
+    .form-group
+      %label Enter a sentence:
+      = f.text_field :text, placeholder: 'sentence', class: "form-control"
 
 %br
 
-.well
-  %table.table
-    %thead
-      %tr
+%table.table.table-striped
+  %thead
+    %tr
+      %th
+        Sentence Type
+      - if @parser.interrogative
         %th
-          Sentence Type
-        - if @parser.interrogative
-          %th
-            Interrogative
-        %th
-          Subject
-        %th
-          Verb
-        %th
-          Predicate
-        %th
-          Contexts
-    %tbody
-      %tr
+          Interrogative
+      %th
+        Subject
+      %th
+        Verb
+      %th
+        Predicate
+      %th
+        Contexts
+  %tbody
+    %tr
+      %td
+        = @parser.sentence_type
+      - if @parser.interrogative
         %td
-          = @parser.sentence_type
-        - if @parser.interrogative
-          %td
-            = @parser.interrogative
-        %td
-          = @parser.subject
-        %td
-          = @parser.verb
-        %td
-          = @parser.predicate
-        %td
-          = @parser.contexts.map(&:name).join ", "
+          = @parser.interrogative
+      %td
+        = @parser.subject
+      %td
+        = @parser.verb
+      %td
+        = @parser.predicate
+      %td
+        = @parser.contexts.map(&:name).join ", "

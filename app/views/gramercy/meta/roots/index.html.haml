@@ -1,7 +1,7 @@
 %h1
-  Roots (#{@roots.to_a.count})
-
-= link_to "Add Root", new_gramercy_meta_root_path, class: "pull-right btn btn-primary"
+  roots
+  .pull-right.small
+    #{@roots.to_a.count} items
 
 %table.table.table-striped
   %thead
