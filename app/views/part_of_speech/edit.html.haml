@@ -1,0 +1,16 @@
+%h1
+  = @part_of_speech.base_form
+  .pull-right.small
+    part of speech
+
+= form_for(@part_of_speech) do |f|
+  .form-group
+    %label Base Form
+    = f.text_field :base_form, class: "form-control"
+  .form-group
+    %label Part of Speech
+    = f.select(:form, options_for_select(PartOfSpeech::FORMS), {}, class: 'form-control', :"data-selects-visibility" => ".sub_form")
+  .sub_form{'data-show-for' => 'adjective'}
+    %label.checkbox
+      = f.check_box :is_physical, class: 'checkbox inline'
+      Physical

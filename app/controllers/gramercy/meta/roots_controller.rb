@@ -3,7 +3,8 @@ module Gramercy
     class RootsController < ApplicationController
 
       def index
-        @roots = Gramercy::Meta::Root.all.order(base_form: :asc)
+        @roots = Gramercy::Meta::Root.all.order(base_form: :asc).to_a
+        @roots_with_contexts = Gramercy::Meta::Root.as('root').contexts(:c).pluck('root.base_form, c.name').inject({}){|a, r| a[r[0]] ||= []; a[r[0]] << r[1]; a}
       end
 
       def create

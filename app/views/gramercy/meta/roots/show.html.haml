@@ -6,9 +6,9 @@
 %table.table.table-striped.table-hover
   %thead
     %tr
-      %th Context
-      %th Synonyms
-      %th Antonyms
+      %th.col-md-3 Context
+      %th.col-md-3 Synonyms
+      %th.col-md-3 Antonyms
 
   %tbody
     - @root.contexts.each do |context|
@@ -23,3 +23,22 @@
           - @root.antonyms_in_context(context).to_a.each do |word|
             = link_to word.base_form, gramercy_meta_root_path(word)
             %br
+
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th.col-md-3 Part of Speech
+      %th.col-md-3 Base Form
+      %th.col-md-3
+  %tbody
+    - Gramercy::Meta::Root::PARTS_OF_SPEECH.each do |part_of_speech|
+      - @root.send(part_of_speech).each do |form|
+        %tr
+          %td
+            = part_of_speech.singularize
+          %td
+            = form.base_form
+          %td
+      %tr
+        %td
+          = link_to "Add New", edit_part_of_speech_path(1)

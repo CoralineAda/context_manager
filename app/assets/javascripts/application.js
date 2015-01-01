@@ -14,3 +14,35 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require_tree .
+
+$(function() {
+  function selectVisibility() {
+    var selector = $($(this).attr('data-selects-visibility'));
+    if ($(this).is('input[type="checkbox"]')) {
+      if ($(this).is(':checked')) {
+        value = '_checked';
+      } else {
+        value = '_unchecked';
+      }
+    } else if ($(this).is('input[type=radio]')) {
+      var checkedRadioButton = $(this).closest('form').find('input[type="radio"][name="' + $(this).attr('name') + '"]:checked');
+      if (checkedRadioButton.length > 0) {
+        value = checkedRadioButton.val();
+      }
+    } else {
+      var value = $(this).val();
+    }
+    if (!value) {
+      value = '_blank';
+    }
+    selector.filter('[data-show-for]:not([data-show-for~="' + value + '"])').hide();
+    selector.filter('[data-hide-for~="' + value + '"]').hide();
+    selector.filter('[data-hide-for]:not([data-hide-for~="' + value + '"])').show();
+    selector.filter('[data-show-for~="' + value + '"]').show();
+  }
+
+  $(this).find('[data-selects-visibility]').change(selectVisibility);
+  $(this).find('select[data-selects-visibility]').each(selectVisibility);
+  $(this).find('input[data-selects-visibility][type="checkbox"]').each(selectVisibility);
+  $(this).find('input[data-selects-visibility][type="radio"]:checked').each(selectVisibility);
+});

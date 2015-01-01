@@ -1,7 +1,7 @@
 %h1
   roots
   .pull-right.small
-    #{@roots.to_a.count} items
+    #{@roots.count} items
 
 %table.table.table-striped
   %thead
@@ -15,7 +15,7 @@
         %td
           = link_to root.base_form, root
         %td
-          = root.contexts.map(&:name) * ', '
+          = @roots_with_contexts[root.base_form].join(', ')
         %td
           .pull-right
             = link_to 'Destroy', root, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'
