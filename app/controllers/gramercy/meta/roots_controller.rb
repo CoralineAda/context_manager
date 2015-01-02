@@ -18,6 +18,12 @@ module Gramercy
         end
       end
 
+      def destroy
+        @root = Gramercy::Meta::Root.find(params[:id])
+        @root.destroy
+        redirect_to gramercy_meta_roots_path
+      end
+
       def show
         @root = Gramercy::Meta::Root.find(params[:id])
       end
