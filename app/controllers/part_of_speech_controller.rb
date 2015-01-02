@@ -16,7 +16,7 @@ class PartOfSpeechController < ApplicationController
   private
 
   def pos_params
-    params.require(:part_of_speech).permit!#(:base_form, :type, :root_word, :properties => [])
+    params.require(:part_of_speech).permit!
   end
 
 end

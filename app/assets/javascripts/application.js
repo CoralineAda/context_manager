@@ -16,6 +16,9 @@
 //= require_tree .
 
 $(function() {
+
+  $('form:not(.filter) :input:visible:enabled:first').focus()
+
   function selectVisibility() {
     var selector = $($(this).attr('data-selects-visibility'));
     if ($(this).is('input[type="checkbox"]')) {

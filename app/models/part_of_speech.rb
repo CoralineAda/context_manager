@@ -9,8 +9,10 @@ class PartOfSpeech
   attr_accessor :properties
 
   FORMS = %w{ adjective adverb noun verb }
-  ADJECTIVE_ATTRIBUTES = %w{ is_physical }
-  ALL_ATTRIBUTES = ADJECTIVE_ATTRIBUTES
+  ADJECTIVE_ATTRIBUTES = Gramercy::PartOfSpeech::Generic::PROPERTY_LIST[:adjective]
+  ADVERB_ATTRIBUTES = Gramercy::PartOfSpeech::Generic::PROPERTY_LIST[:adverb]
+  NOUN_ATTRIBUTES = Gramercy::PartOfSpeech::Generic::PROPERTY_LIST[:noun]
+  VERB_ATTRIBUTES = Gramercy::PartOfSpeech::Generic::PROPERTY_LIST[:verb]
 
   def initialize(params={})
     self.base_form = params[:base_form]
@@ -22,8 +24,7 @@ class PartOfSpeech
   def save
     object = Gramercy::PartOfSpeech::Generic.create!(base_form: self.base_form, type: self.type)
     object.set_root(root)
-    self.properties.each{ |k,v| object.set_property(k,v) }
-    object.save
+    self.properties.each{ |k,v| v && ! v.empty? && object.set_property(k,v) }
   end
 
   def id
