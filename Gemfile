@@ -13,6 +13,7 @@ gem 'bootswatch-rails'
 gem 'neo4j'
 gem 'gramercy', git: "https://github.com/CoralineAda/gramercy.git"
 gem "haml-rails", "~> 0.6.0"
+gem 'rails_12factor'
 
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
