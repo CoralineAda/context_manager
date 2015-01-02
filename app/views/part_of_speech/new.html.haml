@@ -27,12 +27,16 @@
                 = property
               = check_box_tag "part_of_speech[property_attrs][#{property}]", true, false
         - else
+          %br
           - Presenters::PartOfSpeech::ADJECTIVE_ATTRIBUTES[type].each do |property|
             .col-md-3
               %label
                 = property
               = text_field_tag "part_of_speech[property_attrs][#{property}]", nil, class: "form-control"
     .sub_form{'data-show-for' => 'adverb'}
+      %p
+        An adverb modifies manner, place, purpose, frequency, time, completeness and is of type verbal or adjectival.
+
       - Presenters::PartOfSpeech::ADVERB_ATTRIBUTES.keys.each do |type|
         - if type == :boolean_values
           - Presenters::PartOfSpeech::ADVERB_ATTRIBUTES[type].each do |property|
@@ -41,6 +45,7 @@
                 = property
               = check_box_tag "part_of_speech[property_attrs][#{property}]", true, false
         - else
+          %br
           - Presenters::PartOfSpeech::ADVERB_ATTRIBUTES[type].each do |property|
             .col-md-3
               %label
@@ -55,12 +60,18 @@
                 = property
               = check_box_tag "part_of_speech[property_attrs][#{property}]", true, false
         - else
+          %br
           - Presenters::PartOfSpeech::NOUN_ATTRIBUTES[type].each do |property|
             .col-md-3
               %label
                 = property
               = text_field_tag "part_of_speech[property_attrs][#{property}]", nil, class: "form-control"
     .sub_form{'data-show-for' => 'verb'}
+      %ul
+        %li A transitive verb is an action that requires an object, e.g. kick.
+        %li An intransitive verb is an action verb requiring no object, e.g. arrived.
+        %li Linking verbs do not express an action, e.g. become.
+
       - Presenters::PartOfSpeech::VERB_ATTRIBUTES.keys.each do |type|
         - if type == :boolean_values
           - Presenters::PartOfSpeech::VERB_ATTRIBUTES[type].each do |property|
@@ -69,6 +80,7 @@
                 = property
               = check_box_tag "part_of_speech[property_attrs][#{property}]", true, false
         - else
+          %br.clear
           - Presenters::PartOfSpeech::VERB_ATTRIBUTES[type].each do |property|
             .col-md-3
               %label
