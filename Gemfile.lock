@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CoralineAda/gramercy.git
-  revision: bf1289b5528d81fe1f669fdb490455c785cdcb21
+  revision: 0ce099b973c2a593ef28a7f3219654edce819c18
   specs:
     gramercy (0.0.1)
       activesupport
