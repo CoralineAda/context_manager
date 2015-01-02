@@ -22,6 +22,8 @@ module ContextManager
       g.test_framework  :rspec, :fixture => false
     end
 
+    config.serve_static_assets = true
+
     config.neo4j.session_type = :server_db
     config.neo4j.session_path = ENV["GRAPHENEDB_URL"] || 'http://localhost:7474'
     config.neo4j.storage_path = "#{config.root}/db/neo4j-#{Rails.env}"
