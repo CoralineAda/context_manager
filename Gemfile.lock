@@ -1,5 +1,6 @@
-PATH
-  remote: ../gramercy
+GIT
+  remote: https://github.com/CoralineAda/gramercy.git
+  revision: 9c2952e2f7a323141a3603c644b2e8fb7d679eb7
   specs:
     gramercy (0.0.1)
       activesupport

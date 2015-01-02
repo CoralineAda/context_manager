@@ -10,8 +10,6 @@ require "sprockets/railtie"
 require 'neo4j'
 require 'neo4j/railtie'
 
-Neo4j::Session.open :server_db, "http://localhost:7474"
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -24,9 +22,14 @@ module ContextManager
       g.test_framework  :rspec, :fixture => false
     end
 
+    config.neo4j.session_type = :server_db
+    config.neo4j.session_path = ENV["GRAPHENEDB_URL"] || 'http://localhost:7474'
     config.neo4j.storage_path = "#{config.root}/db/neo4j-#{Rails.env}"
     config.neo4j.identity_map = false
   end
 
 end
+
+
+#Neo4j::Session.open :server_db, "http://localhost:7474"
 
