@@ -9,7 +9,6 @@ gem 'autoprefixer-rails'
 gem 'bootswatch-rails'
 
 gem 'neo4j'
-gem 'gramercy', git: "https://github.com/CoralineAda/gramercy.git"
 gem "haml-rails", "~> 0.6.0"
 
 gem 'jquery-rails'
@@ -20,7 +19,6 @@ group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'spring'
-  gem 'pry'
   gem 'rspec-rails'
 end
 
