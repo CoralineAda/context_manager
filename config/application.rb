@@ -9,6 +9,7 @@ require "action_view/railtie"
 require "sprockets/railtie"
 require 'neo4j'
 require 'neo4j/railtie'
+require 'dotenv'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -31,6 +32,8 @@ module ContextManager
   end
 
 end
+
+Dotenv::Railtie.load
 
 
 #Neo4j::Session.open :server_db, "http://localhost:7474"

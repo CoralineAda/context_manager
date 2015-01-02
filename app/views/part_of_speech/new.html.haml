@@ -1,0 +1,82 @@
+%h1
+  = @part_of_speech.base_form
+  .pull-right.small
+    part of speech for #{@part_of_speech.root_word}
+
+%br.clear
+
+.form.form-vertical
+  = form_tag('/part_of_speech', method: :post)
+
+  = hidden_field_tag "part_of_speech[root_word]", @part_of_speech.root_word
+
+  .form-group
+    %label Base Form
+    = text_field_tag "part_of_speech[base_form]", nil, class: "form-control"
+  .form-group
+    %label Part of Speech
+    = select_tag("part_of_speech[type]", options_for_select(Presenters::PartOfSpeech::FORMS), class: 'form-control', :"data-selects-visibility" => ".sub_form")
+  %label Properties
+  .well
+    .sub_form{'data-show-for' => 'adjective'}
+      - Presenters::PartOfSpeech::ADJECTIVE_ATTRIBUTES.keys.each do |type|
+        - if type == :boolean_values
+          - Presenters::PartOfSpeech::ADJECTIVE_ATTRIBUTES[type].each do |property|
+            .col-md-3
+              %label
+                = property
+              = check_box_tag "part_of_speech[property_attrs][#{property}]", true, false
+        - else
+          - Presenters::PartOfSpeech::ADJECTIVE_ATTRIBUTES[type].each do |property|
+            .col-md-3
+              %label
+                = property
+              = text_field_tag "part_of_speech[property_attrs][#{property}]", nil, class: "form-control"
+    .sub_form{'data-show-for' => 'adverb'}
+      - Presenters::PartOfSpeech::ADVERB_ATTRIBUTES.keys.each do |type|
+        - if type == :boolean_values
+          - Presenters::PartOfSpeech::ADVERB_ATTRIBUTES[type].each do |property|
+            .col-md-3
+              %label
+                = property
+              = check_box_tag "part_of_speech[property_attrs][#{property}]", true, false
+        - else
+          - Presenters::PartOfSpeech::ADVERB_ATTRIBUTES[type].each do |property|
+            .col-md-3
+              %label
+                = property
+              = text_field_tag "part_of_speech[property_attrs][#{property}]", nil, class: "form-control"
+    .sub_form{'data-show-for' => 'noun'}
+      - Presenters::PartOfSpeech::NOUN_ATTRIBUTES.keys.each do |type|
+        - if type == :boolean_values
+          - Presenters::PartOfSpeech::NOUN_ATTRIBUTES[type].each do |property|
+            .col-md-3
+              %label
+                = property
+              = check_box_tag "part_of_speech[property_attrs][#{property}]", true, false
+        - else
+          - Presenters::PartOfSpeech::NOUN_ATTRIBUTES[type].each do |property|
+            .col-md-3
+              %label
+                = property
+              = text_field_tag "part_of_speech[property_attrs][#{property}]", nil, class: "form-control"
+    .sub_form{'data-show-for' => 'verb'}
+      - Presenters::PartOfSpeech::VERB_ATTRIBUTES.keys.each do |type|
+        - if type == :boolean_values
+          - Presenters::PartOfSpeech::VERB_ATTRIBUTES[type].each do |property|
+            .col-md-3
+              %label
+                = property
+              = check_box_tag "part_of_speech[property_attrs][#{property}]", true, false
+        - else
+          - Presenters::PartOfSpeech::VERB_ATTRIBUTES[type].each do |property|
+            .col-md-3
+              %label
+                = property
+              = text_field_tag "part_of_speech[property_attrs][#{property}]", nil, class: "form-control"
+
+    %br.clear
+    .form-group
+      .pull-right
+        = submit_tag("Add Root", class: "btn-small")
+

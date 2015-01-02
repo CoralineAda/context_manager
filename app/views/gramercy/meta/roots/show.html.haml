@@ -29,6 +29,8 @@
             = link_to word.base_form, gramercy_meta_root_path(word)
             %br
 
+%h2 Forms
+
 %table.table.table-striped.table-hover
   %thead
     %tr
@@ -43,8 +45,10 @@
         %td
           = form.base_form
         %td
-    %tr
-      %td
-        = link_to "Add New", edit_part_of_speech_path(root_base_form: @root.base_form, id: 1)
+          .pull-right
+            = link_to 'Destroy', part_of_speech_path(form.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs', style: "width: 75px"
+
+.pull-right
+  = link_to "Add New", new_part_of_speech_path(root_base_form: @root.base_form), class: "btn btn-small"
 
 

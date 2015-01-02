@@ -8,6 +8,7 @@
     %tr
       %th Base Form
       %th Contexts
+      %th Forms
       %th
   %tbody
     - @roots.each do |root|
@@ -16,6 +17,9 @@
           = link_to root.base_form, root
         %td
           = @roots_with_contexts[root.base_form].join(', ')
+        %td
+          - if with_forms = @roots_with_forms[root.base_form]
+            = with_forms.join(", ")
         %td
           .pull-right
             = link_to 'Destroy', root, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'
