@@ -1,0 +1,25 @@
+%h1
+  parts of speech
+  .pull-right.small
+    #{@parts_of_speech.count} items
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Base Form
+      %th Type
+      %th Properties
+      %th
+  %tbody
+    - @parts_of_speech.each do |word|
+      %tr
+        %td
+          = word.base_form
+        %td
+          = word.type
+        %td
+          - if with_properties = @words_with_properties[word.id]
+            = with_properties.join(", ")
+        %td
+          .pull-right
+            / = link_to 'Destroy', word, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'

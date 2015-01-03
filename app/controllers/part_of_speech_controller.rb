@@ -1,6 +1,8 @@
 class PartOfSpeechController < ApplicationController
 
   def index
+    @parts_of_speech = Gramercy::PartOfSpeech::Generic.all.order_by(:base_form, :asc).to_a
+    @words_with_properties = Gramercy::PartOfSpeech::Generic.as('word').properties(:p).pluck('word, p.name, p.value').inject({}){|a, p| a[p[0].id] ||= []; a[p[0].id] << "#{p[1]}: #{p[2]}"; a}
   end
 
   def create

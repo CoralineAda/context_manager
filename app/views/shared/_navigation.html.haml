@@ -10,5 +10,7 @@
           = link_to "Contexts", gramercy_meta_contexts_path
         %li{class: controller.controller_name.eql?('roots') ? "active" : ""}
           = link_to "Roots", gramercy_meta_roots_path
+        %li{class: controller.controller_name.eql?('parts_of_speech') ? "active" : ""}
+          = link_to "Parts of Speech", part_of_speech_index_path
         %li{class: controller.controller_name.eql?('parsers') ? "active" : ""}
           = link_to "Parser", new_parser_path
