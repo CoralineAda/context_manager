@@ -13,7 +13,7 @@ gem 'faceted'
 gem 'neo4j'
 gem 'gramercy', path: "../gramercy" #git: "https://github.com/CoralineAda/gramercy.git"
 gem "haml-rails", "~> 0.6.0"
-gem 'rails_12factor'
+gem 'rails_12factor', :groups => [:production]
 gem 'dotenv-rails', :groups => [:development, :test]
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
