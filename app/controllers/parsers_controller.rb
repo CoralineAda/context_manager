@@ -1,8 +1,5 @@
 class ParsersController < ApplicationController
 
-  def index
-  end
-
   def new
     @parser = Parser.new("This cat is cool.")
   end
