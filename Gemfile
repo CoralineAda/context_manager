@@ -16,6 +16,7 @@ gem "haml-rails", "~> 0.6.0"
 gem 'rails_12factor', :groups => [:production]
 gem 'dotenv-rails', :groups => [:development, :test]
 gem 'jquery-rails'
+gem 'jquery-datatables-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 

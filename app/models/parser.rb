@@ -35,6 +35,10 @@ class Parser
     parser.predicate
   end
 
+  def positivity
+    parser.positivity
+  end
+
   def contexts
     parser.contexts
   end

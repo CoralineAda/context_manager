@@ -14,8 +14,27 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require_tree .
+//= require dataTables/jquery.dataTables
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 
 $(function() {
+
+  $('.datatable').DataTable({
+    paging: false,
+    columnDefs: [
+      {"orderable": false, "targets": 'no_sort'},
+      {"searchable": false, "targets": 'no_search'}
+    ]
+    // ajax: ...,
+    // autoWidth: false,
+    // pagingType: 'full_numbers',
+    // processing: true,
+    // serverSide: true,
+
+    // Optional, if you want full pagination controls.
+    // Check dataTables documentation to learn more about available options.
+    // http://datatables.net/reference/option/pagingType
+  });
 
   $('form:not(.filter) :input:visible:enabled:first').focus()
 

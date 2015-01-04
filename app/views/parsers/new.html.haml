@@ -27,6 +27,8 @@
         Predicate
       %th
         Contexts
+      %th
+        Positivity
   %tbody
     %tr
       %td
@@ -42,3 +44,6 @@
         = @parser.predicate
       %td
         = @parser.contexts.map(&:name).join ", "
+      %td
+        = @parser.positivity
+
