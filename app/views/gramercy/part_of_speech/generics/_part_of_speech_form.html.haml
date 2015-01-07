@@ -4,12 +4,12 @@
       .col-md-3
         %label
           = property
-        - if @generic.property(property)
-          = hidden_field_tag "gramercy_part_of_speech_generic[property_attributes][#{property}]", ''
-          = check_box_tag "gramercy_part_of_speech_generic[property_attributes][#{property}]", 'true', true
-        -else
-          = hidden_field_tag "gramercy_part_of_speech_generic[property_attributes][#{property}]", ''
-          = check_box_tag "gramercy_part_of_speech_generic[property_attributes][#{property}]", 'true', false
+          - if @generic.property(property)
+            = hidden_field_tag "gramercy_part_of_speech_generic[property_attributes][#{property}]", ''
+            = check_box_tag "gramercy_part_of_speech_generic[property_attributes][#{property}]", 'true', true, class: "form-control "
+          -else
+            = hidden_field_tag "gramercy_part_of_speech_generic[property_attributes][#{property}]", ''
+            = check_box_tag "gramercy_part_of_speech_generic[property_attributes][#{property}]", 'true', false
   - else
     %br.clear
     - Gramercy::PartOfSpeech::Generic::PROPERTY_LIST[part_of_speech][type].each do |property|
