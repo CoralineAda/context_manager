@@ -1,18 +1,25 @@
 %h1
   = @part_of_speech.base_form
-  .pull-right.small
-    part of speech for #{@part_of_speech.root_word}
+  -if @part_of_speech.root_word
+    .pull-right.small
+      part of speech for #{@part_of_speech.root_word}
+  -else
+    .pull-right.small
+      part of speech
 
 %br.clear
 
 .form.form-vertical
-  = form_tag('/part_of_speech', method: :post)
+  -if @part_of_speech.id
+    = form_tag('/part_of_speech', method: :put)
+  -else
+    = form_tag('/part_of_speech', method: :post)
 
   = hidden_field_tag "part_of_speech[root_word]", @part_of_speech.root_word
 
   .form-group
     %label Base Form
-    = text_field_tag "part_of_speech[base_form]", nil, class: "form-control"
+    = text_field_tag "part_of_speech[base_form]", @part_of_speech.base_form, class: "form-control"
   .form-group
     %label Part of Speech
     = select_tag("part_of_speech[type]", options_for_select(Presenters::PartOfSpeech::FORMS), class: 'form-control', :"data-selects-visibility" => ".sub_form")

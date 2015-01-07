@@ -22,10 +22,12 @@ module Presenters
     end
 
     def set_properties_from_attrs
+      return unless property_attrs
       self.property_attrs.each{ |k,v| v && ! v.empty? && object.set_property(k,v) }
     end
 
     def set_root
+      return unless root
       object.set_root(root)
     end
 

@@ -11,6 +11,15 @@
       %th.no_search.no_sort Properties
       %th.no_search.no_sort
   %tbody
+    %tr.active.no_search.no_sort
+      %td
+        = form_tag('/parts_of_speech/new', method: :get)
+        = text_field_tag "part_of_speech[base_form]", nil, class: "form-control"
+      %td
+      %td
+      %td
+        .pull-right
+          = submit_tag("Save", class: "btn-xs")
     - @parts_of_speech.each do |word|
       - next unless word.base_form
       %tr
@@ -23,4 +32,4 @@
             = with_properties.join(", ")
         %td
           .pull-right
-            = link_to 'Destroy', part_of_speech_path(word), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'
+            = link_to 'Destroy', gramercy_part_of_speech_generic_path(word), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'

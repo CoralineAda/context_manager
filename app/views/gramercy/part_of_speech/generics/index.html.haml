@@ -1,0 +1,35 @@
+%h1
+  parts of speech
+  .pull-right.small
+    #{@parts_of_speech.count} items
+
+= form_for(@generic) do |f|
+  %table.table.table-striped.datatable
+    %thead
+      %tr
+        %th Base Form
+        %th Type
+        %th.no_search.no_sort Properties
+        %th.no_search.no_sort
+    %tbody
+      %tr.active.no_search.no_sort
+        %td
+          = f.text_field :base_form, placeholder: 'word'
+        %td
+        %td
+        %td
+          .pull-right
+            = f.submit "Add", class: "btn btn-default btn-xs", style: "width: 75px"
+      - @parts_of_speech.each do |word|
+        - next unless word.base_form
+        %tr
+          %td
+            = link_to word.base_form, edit_gramercy_part_of_speech_generic_path(word)
+          %td
+            = word.type
+          %td
+            - if with_properties = @words_with_properties[word.id]
+              = with_properties.join(", ")
+          %td
+            .pull-right
+              = link_to 'Destroy', gramercy_part_of_speech_generic_path(word), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'

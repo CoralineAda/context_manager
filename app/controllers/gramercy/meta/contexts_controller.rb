@@ -3,6 +3,7 @@ module Gramercy
     class ContextsController < ApplicationController
 
       before_filter :scope_context, only: [:edit, :show]
+
       def index
         @contexts = Gramercy::Meta::Context.all.order(name: :asc)
       end
