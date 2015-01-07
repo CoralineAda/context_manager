@@ -11,7 +11,7 @@ module Gramercy
       def create
         if @generic = Gramercy::PartOfSpeech::Generic.create!(generic_params)
           if @generic.property_attributes
-            @generic.property_attributes.each{ |k,v| v && ! v.empty? && object.set_property(k,v) }
+            @generic.property_attributes.each{ |k,v| v && ! v.empty? && @generic.set_property(k,v) }
             @generic.set_root if generic_params[:root]
           end
           render :edit
@@ -38,7 +38,10 @@ module Gramercy
       def update
         @generic = Gramercy::PartOfSpeech::Generic.find(params[:id])
         if @generic.update_attributes(generic_params)
-           redirect_to gramercy_part_of_speech_generics_path
+          if @generic.property_attributes
+            @generic.property_attributes.each{ |k,v| @generic.set_property(k,v)}
+          end
+          redirect_to gramercy_part_of_speech_generics_path
         else
            render :action => 'edit'
         end
