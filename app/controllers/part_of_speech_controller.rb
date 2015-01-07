@@ -19,7 +19,6 @@ class PartOfSpeechController < ApplicationController
 
   def new
     @part_of_speech = Presenters::PartOfSpeech.new(base_form: pos_params[:base_form], root_word: pos_params[:root_base_form])
-    binding.pry
   end
 
   def edit

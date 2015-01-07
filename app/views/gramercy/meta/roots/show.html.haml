@@ -49,8 +49,8 @@
           = form.properties.map{|property| "#{property.name}=#{property.value}"}.join(", ")
         %td
           .pull-right
-            = link_to 'Destroy', part_of_speech_path(form.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs', style: "width: 75px"
+            = link_to 'Destroy', gramercy_part_of_speech_generic_path(form.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs', style: "width: 75px"
 
-= link_to "Add New", new_part_of_speech_path(root_base_form: @root.base_form), class: "btn btn-small"
+= link_to "Add New", new_gramercy_part_of_speech_generic_path(root_base_form: @root.base_form), class: "btn btn-small"
 
 

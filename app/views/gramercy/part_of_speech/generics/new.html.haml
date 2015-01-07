@@ -1,0 +1,45 @@
+%h1
+  = @generic.base_form
+  -if @generic.root_word
+    .pull-right.small
+      part of speech for #{@generic.root_word}
+  -else
+    .pull-right.small
+      part of speech
+
+%br.clear
+
+.form.form-vertical
+  = form_for(@generic) do |f|
+    = f.hidden_field :root_word, value: @generic.root_word
+    .form-group
+      %label Base Form
+      = f.text_field :base_form, class: "form-control"
+    .form-group
+      %label Part of Speech
+      = f.select :type, options_for_select(Gramercy::PartOfSpeech::Generic::PRIMARY_FORMS, @generic.type), {}, class: 'form-control', :"data-selects-visibility" => ".sub_form"
+    %label Properties
+    .well
+      .sub_form{'data-show-for' => 'adjective'}
+        = render partial: "part_of_speech_form", locals: { part_of_speech: :adjective }
+
+      .sub_form{'data-show-for' => 'adverb'}
+        %p
+          An adverb modifies manner, place, purpose, frequency, time, completeness and is of type verbal or adjectival.
+        = render partial: "part_of_speech_form", locals: { part_of_speech: :adverb }
+
+      .sub_form{'data-show-for' => 'noun'}
+        = render partial: "part_of_speech_form", locals: { part_of_speech: :noun }
+
+      .sub_form{'data-show-for' => 'verb'}
+        %ul
+          %li A transitive verb is an action that requires an object, e.g. kick.
+          %li An intransitive verb is an action verb requiring no object, e.g. arrived.
+          %li Linking verbs do not express an action, e.g. become.
+        = render partial: "part_of_speech_form", locals: { part_of_speech: :verb }
+
+      %br.clear
+      .form-group
+        .pull-right
+          = f.submit("Add Word", class: "btn-small")
+

@@ -12,9 +12,16 @@ module Gramercy
         if @generic = Gramercy::PartOfSpeech::Generic.create!(generic_params)
           if @generic.property_attributes
             @generic.property_attributes.each{ |k,v| v && ! v.empty? && @generic.set_property(k,v) }
-            @generic.set_root if generic_params[:root]
           end
-          render :edit
+          if generic_params[:root_word]
+            @root = Gramercy::Meta::Root.find_by(base_form: generic_params[:root_word])
+            @generic.set_root(@root)
+          end
+          if @generic.root
+            redirect_to gramercy_meta_root_path(@generic.root)
+          else
+            render :edit
+          end
         else
           flash[:notice] = "The word could not be created."
           render :new
@@ -29,6 +36,10 @@ module Gramercy
 
       def edit
         @generic = Gramercy::PartOfSpeech::Generic.find(params[:id])
+      end
+
+      def new
+        @generic = Gramercy::PartOfSpeech::Generic.new(root_word: params[:root_base_form])
       end
 
       def show
