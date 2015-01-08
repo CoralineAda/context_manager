@@ -1,10 +1,19 @@
 %h1
   parts of speech
   .pull-right.small
-    #{@parts_of_speech.count} items
+    #{@generics.count} items
+
+- @parts_of_speech.each do |part_of_speech|
+  - if @this_part_of_speech == part_of_speech
+    %b
+      = part_of_speech.pluralize
+      |
+  - else
+    = link_to part_of_speech.pluralize, gramercy_part_of_speech_generics_path(part_of_speech: part_of_speech)
+    |
 
 = form_for(@generic) do |f|
-  %table.table.table-striped.datatable
+  %table.table.table-striped.datatable{style: 'margin-top: 1em; padding-top: 1em;'}
     %thead
       %tr
         %th Base Form
@@ -20,7 +29,7 @@
         %td
           .pull-right
             = f.submit "Add", class: "btn btn-default btn-xs", style: "width: 75px"
-      - @parts_of_speech.each do |word|
+      - @generics.each do |word|
         - next unless word.base_form
         %tr
           %td

@@ -4,8 +4,10 @@ module Gramercy
 
       def index
         @generic = Gramercy::PartOfSpeech::Generic.new
-        @parts_of_speech = Gramercy::PartOfSpeech::Generic.all.order_by(:base_form, :asc).to_a
-        @words_with_properties = Gramercy::PartOfSpeech::Generic.as('word').properties(:p).pluck('word, p.name, p.value').inject({}){|a, p| a[p[0].id] ||= []; a[p[0].id] << "#{p[1]}: #{p[2]}"; a}
+        @parts_of_speech = Gramercy::PartOfSpeech::Generic::PARTS_OF_SPEECH
+        @this_part_of_speech = params[:part_of_speech] || 'noun'
+        @generics = Gramercy::PartOfSpeech::Generic.where(type: @this_part_of_speech).order_by(:base_form, :asc).to_a
+        @words_with_properties = Gramercy::PartOfSpeech::Generic.as('word').where(type: @this_part_of_speech).properties(:p).pluck('word, p.name, p.value').inject({}){|a, p| a[p[0].id] ||= []; a[p[0].id] << "#{p[1]}: #{p[2]}"; a}
       end
 
       def create
