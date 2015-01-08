@@ -21,7 +21,7 @@ module Gramercy
       def destroy
         @root = Gramercy::Meta::Root.find(params[:id])
         @root.destroy
-        redirect_to gramercy_meta_roots_path
+        redirect_to :back
       end
 
       def show

@@ -3,7 +3,11 @@
   .pull-right.small
     #{@roots.count} items
 
-%table.table.table-striped
+%p
+  Add roots from the appropriate
+  = link_to 'context.', gramercy_meta_contexts_path
+
+%table.table.table-striped.datatable
   %thead
     %tr
       %th Base Form

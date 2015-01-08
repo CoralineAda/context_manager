@@ -6,11 +6,13 @@
 .roots
 
   = form_for(Gramercy::Meta::Root.new) do |f|
-    %table.table.table-striped.table-hover
+    %table.table.table-striped.table-hover.datatable
       %thead
         %tr
           %th Root
           %th Positivity
+          %th # Forms
+          %th
       %tbody
         %tr.active
           %td
@@ -18,6 +20,7 @@
             = f.text_field :base_form, placeholder: 'base form'
           %td
             = text_field_tag :positivity, nil, placeholder: 'positivity'
+          %td
           %td
             .pull-right
               = f.submit "Add Root", class: "btn-small"
@@ -28,3 +31,7 @@
             %td
               = root.positivity > 0 ? "+#{root.positivity}" : root.positivity
             %td
+              = root.forms.count
+            %td
+              .pull-right
+                = link_to 'Destroy', gramercy_meta_root_path(root), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs', style: "width: 75px"
