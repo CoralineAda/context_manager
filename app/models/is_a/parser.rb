@@ -69,7 +69,7 @@ module IsA
     end
 
     def nouns
-      @nouns ||= sentence_parser.nouns.split.map(&:last).flatten
+      @nouns ||= sentence_parser.nouns
     end
 
     def singularized_nouns

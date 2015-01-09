@@ -14,39 +14,41 @@
 .well
   = @parser.response
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th
-        Sentence Type
-      - if @grammar_parser.interrogative
+- if @grammar_parser
+
+  %table.table.table-striped
+    %thead
+      %tr
         %th
-          Interrogative
-      %th
-        Subject
-      %th
-        Verb
-      %th
-        Predicate
-      %th
-        Contexts
-      %th
-        Positivity
-  %tbody
-    %tr
-      %td
-        = @grammar_parser.sentence_type
-      - if @grammar_parser.interrogative
+          Sentence Type
+        - if @grammar_parser.interrogative
+          %th
+            Interrogative
+        %th
+          Subject
+        %th
+          Verb
+        %th
+          Predicate
+        %th
+          Contexts
+        %th
+          Positivity
+    %tbody
+      %tr
         %td
-          = @grammar_parser.interrogative
-      %td
-        = @grammar_parser.subject
-      %td
-        = @grammar_parser.verb
-      %td
-        = @grammar_parser.predicate
-      %td
-        = @grammar_parser.contexts.map(&:name).join ", "
-      %td
-        = @grammar_parser.positivity
+          = @grammar_parser.sentence_type
+        - if @grammar_parser.interrogative
+          %td
+            = @grammar_parser.interrogative
+        %td
+          = @grammar_parser.subject
+        %td
+          = @grammar_parser.verb
+        %td
+          = @grammar_parser.predicate
+        %td
+          = @grammar_parser.contexts.map(&:name).join ", "
+        %td
+          = @grammar_parser.positivity
 
