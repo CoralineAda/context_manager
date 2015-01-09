@@ -15,11 +15,15 @@ module IsA
       reponse_text
     end
 
+    def sentence_parser
+      Gramercy::Grammar::Parser.new(self.text)
+    end
+
     private
 
     def category_answer
       return "I don't know what #{subject.name} means." unless subject.connected?
-      return "No, but they are both #{category.parent.plural_name}." if subject.is_sibling?(category)
+      return "No, but they are both #{category.shared_parent(category).plural_name}." if subject.is_sibling?(category)
       return "Yes." if subject.is_a_child_of?(category)
       return "#{subject.plural_name} can sometimes be #{category.plural_name}." if category.has_a?(subject)
       return "I don't know anything about #{category.plural_name}." unless category.children.any?
@@ -65,7 +69,7 @@ module IsA
     end
 
     def nouns
-      PartsOfSpeech.probable_nouns_from(text) || []
+      @nouns ||= sentence_parser.nouns.split.map(&:last).flatten
     end
 
     def singularized_nouns

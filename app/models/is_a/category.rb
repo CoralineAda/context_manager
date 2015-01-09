@@ -14,7 +14,7 @@ module IsA
     before_create :singularize_word
 
     def add_child(child)
-      child.add_parent(self)
+      child.parents << self
       self.children << child
     end
 
@@ -45,10 +45,11 @@ module IsA
     end
 
     def connected?
-      self.parents.any? || self.categories.any?
+      self.parents.any? || self.children.any?
     end
 
     def has?(characteristic)
+      return unless characteristic.persisted?
       self.characteristics.include? characteristic
     end
 
@@ -57,7 +58,12 @@ module IsA
     end
 
     def is_sibling?(category)
-      (category.parents & self.parents).any?
+      shared_parent(category)
+    end
+
+    def shared_parent(category)
+      @shared_parents ||= category.parents.to_a & self.parents.to_a
+      @shared_parents.any? && @shared_parents.first
     end
 
     def plural_name

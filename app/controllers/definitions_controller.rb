@@ -2,6 +2,7 @@ class DefinitionsController < ApplicationController
 
   def new
     @parser = Definition.new("Is the cat cool?")
+    @grammar_parser = @parser.parser.sentence_parser
   end
 
   def create
