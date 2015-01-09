@@ -1,0 +1,15 @@
+%h1
+  definitions
+
+%br.clear
+
+.well
+  = form_for(@parser, url: definitions_path) do |f|
+    .form-group
+      %label Enter a sentence:
+      = f.text_field :text, placeholder: 'sentence', class: "form-control"
+
+%br
+
+.well
+  = @parser.response
