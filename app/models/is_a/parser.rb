@@ -8,11 +8,12 @@ module IsA
     end
 
     def response
-      reponse_text = set_characteristic if is_characteristic_definition?
-      reponse_text ||= characteristic_answer if is_characteristic_question?
-      reponse_text ||= set_category if is_category_definition?
-      reponse_text ||= category_answer if is_category_question?
-      reponse_text
+      response_text = set_characteristic if is_characteristic_definition?
+      response_text ||= characteristic_answer if is_characteristic_question?
+      response_text ||= unset_category if is_category_undefinition?
+      response_text ||= set_category if is_category_definition?
+      response_text ||= category_answer if is_category_question?
+      response_text
     end
 
     def sentence_parser
@@ -38,6 +39,11 @@ module IsA
       "Not as far as I know."
     end
 
+    def unset_category
+      subject.is_not! category
+      "OK, I understand."
+    end
+
     def set_category
       subject.is_a! category
       "Got it."
@@ -54,6 +60,10 @@ module IsA
 
     def is_characteristic_definition?
       text =~ /\bhas\b/
+    end
+
+    def is_category_undefinition?
+      text =~/\bis not\b/
     end
 
     def is_category_question?

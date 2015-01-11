@@ -14,5 +14,11 @@
           = link_to "Parts of Speech", gramercy_part_of_speech_generics_path
         %li{class: controller.controller_name.eql?('parsers') ? "active" : ""}
           = link_to "Parser", new_parser_path
-        %li{class: controller.controller_name.eql?('categories') ? "active" : ""}
-          = link_to "Facts", is_a_categories_path
+        %li{class: controller.controller_name.eql?('parsers') ? "active" : ""}
+          %a.dropdown-toggle{data: {toggle: "dropdown"}, role: "button"}
+            Facts
+            %span.caret
+          %ul.dropdown-menu{role: "menu"}
+            %li{class: controller.controller_name.eql?('categories') ? "active" : ""}
+              = link_to "Query", new_is_a_category_path
+              = link_to "List", is_a_categories_path

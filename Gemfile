@@ -9,8 +9,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'bootstrap-sass', '~> 3.3.1i'
 gem 'autoprefixer-rails'
 gem 'bootswatch-rails'
-gem 'neo4j'
-gem 'mongoid'
+gem 'neo4j', github: "neo4jrb/neo4j"
 gem 'gramercy', path: "../gramercy" #git: "https://github.com/CoralineAda/gramercy.git"
 gem "haml-rails", "~> 0.6.0"
 gem 'rails_12factor', :groups => [:production]

@@ -32,6 +32,11 @@ module IsA
       self.children << child
     end
 
+    def remove_child(child)
+      child.parents = child.parents.reject{|p| p == self}
+      self.children = self.children.reject{|c| c == child}
+    end
+
     def is_a_child_of?(thing=self, category)
       return false if thing.parents.empty?
       return true if thing.parents.where(name: category.name)
@@ -56,6 +61,10 @@ module IsA
 
     def is_a!(category)
       category.add_child(self)
+    end
+
+    def is_not!(category)
+      category.remove_child(self)
     end
 
     def connected?
