@@ -32,8 +32,8 @@ module IsA
       self.children << child
     end
 
-    def associated_generic
-      Gramercy::PartOfSpeech::Generic.find_by(base_form: self.name, type: "noun")
+    def associated_root
+      Gramercy::Meta::Root.find_by(base_form: self.name)
     end
 
     def remove_child(child)

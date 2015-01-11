@@ -38,11 +38,11 @@
         %td
           = @grammar_parser.interrogative
       %td
-        = @grammar_parser.subject
+        = @grammar_parser.subject || '-'
       %td
         = @grammar_parser.verb
       %td
-        = @grammar_parser.predicate
+        = @grammar_parser.predicate || '-'
       %td
         = @grammar_parser.contexts.map(&:name).join ", "
       %td

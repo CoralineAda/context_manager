@@ -1,19 +1,28 @@
 module IsA
   class Parser
 
-    attr_reader :text
+    attr_reader :sentences, :text
 
     def initialize(text="")
-      @text = text.downcase
+      @sentences = text.downcase.gsub(/\.|\?|\!|\;/, "\\&\n").lines.map(&:strip)
+      @text      = @sentences.first
+      process_sentences if @sentences.length > 1
     end
 
     def response
-      response_text = set_characteristic if is_characteristic_definition?
+      response_text = "I don't know what you mean." unless nouns.compact.size > 1
+      response_text ||= set_characteristic if is_characteristic_definition?
       response_text ||= characteristic_answer if is_characteristic_question?
       response_text ||= unset_category if is_category_undefinition?
       response_text ||= set_category if is_category_definition?
       response_text ||= category_answer if is_category_question?
       response_text
+    end
+
+    def process_sentences
+      self.sentences[1..-1].each do |sentence|
+        IsA::Parser.new(sentence).response
+      end
     end
 
     def sentence_parser
@@ -87,12 +96,14 @@ module IsA
     end
 
     def create_root_from(category_name)
+      return unless category_name
       return if Gramercy::Meta::Root.find_by(base_form: category_name)
       root = Gramercy::Meta::Root.create!(base_form: category_name)
       sentence_parser.contexts.each{ |context| context.add_expression(root) }
     end
 
     def subject
+      return if singularized_nouns.detect{|n| n.nil? }
       category = Category.find_or_create_by(name: singularized_nouns.first)
       create_root_from(category.name)
       category
@@ -100,6 +111,7 @@ module IsA
 
     def category
       return unless singularized_nouns.any?
+      return if singularized_nouns.detect{|n| n.nil? }
       if is_question?
         Category.where(name: singularized_nouns.last).last || Category.new(name: nouns.last)
       else

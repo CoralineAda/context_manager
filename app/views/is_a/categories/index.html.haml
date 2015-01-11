@@ -15,8 +15,8 @@
         - pair.category == relation.child.name
       %tr
         %td
-          - if generic = relation.child.associated_generic
-            = link_to relation.child.name, edit_gramercy_part_of_speech_generic_path(generic)
+          - if root = relation.child.associated_root
+            = link_to relation.child.name, gramercy_meta_root_path(root)
           - else
             = relation.child.name
         %td
