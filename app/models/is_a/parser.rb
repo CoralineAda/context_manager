@@ -86,8 +86,16 @@ module IsA
       nouns.map(&:singularize)
     end
 
+    def create_root_from(category_name)
+      return if Gramercy::Meta::Root.find_by(base_form: category_name)
+      root = Gramercy::Meta::Root.create!(base_form: category_name)
+      sentence_parser.contexts.each{ |context| context.add_expression(root) }
+    end
+
     def subject
-      Category.find_or_create_by(name: singularized_nouns.first)
+      category = Category.find_or_create_by(name: singularized_nouns.first)
+      create_root_from(category.name)
+      category
     end
 
     def category

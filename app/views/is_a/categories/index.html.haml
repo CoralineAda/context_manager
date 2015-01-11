@@ -12,14 +12,17 @@
   %tbody
     - @family_tree.each do |relation|
       - attrs = @characteristics.select do |pair|
-        - pair.category == relation.child
+        - pair.category == relation.child.name
       %tr
         %td
-          = relation.child
+          - if generic = relation.child.associated_generic
+            = link_to relation.child.name, edit_gramercy_part_of_speech_generic_path(generic)
+          - else
+            = relation.child.name
         %td
           is a
         %td
-          = relation.parent
+          = relation.parent.name
         %td
           and has
         %td

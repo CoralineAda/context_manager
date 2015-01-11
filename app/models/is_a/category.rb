@@ -24,12 +24,16 @@ module IsA
       query_as(:w).
       match(c:IsA::Category).
       optional_match("(parent:`IsA::Category`)-[HAS_CHILD]->(child:`IsA::Category`)").
-      return('DISTINCT parent.name AS parent, child.name AS child')
+      return('DISTINCT parent, child')
     end
 
     def add_child(child)
       child.parents << self
       self.children << child
+    end
+
+    def associated_generic
+      Gramercy::PartOfSpeech::Generic.find_by(base_form: self.name, type: "noun")
     end
 
     def remove_child(child)
