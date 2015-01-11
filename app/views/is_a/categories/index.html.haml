@@ -1,0 +1,39 @@
+%h1
+  facts
+
+.well
+  = form_for(@parser, url: is_a_categories_path) do |f|
+    .form-group
+      %label Enter a statement or question:
+      = f.text_field :text, placeholder: 'sentence', class: "form-control"
+    .form-group
+      %label Response:
+      %p.form-control
+        = @parser.response
+
+%table.table.table-striped.datatable
+  %thead
+    %tr
+      %th Child
+      %th
+      %th Parent
+      %th
+      %th Characteristic
+  %tbody
+    - @family_tree.each do |relation|
+      - attrs = @characteristics.select do |pair|
+        - pair.category == relation.child
+      %tr
+        %td
+          = relation.child
+        %td
+          is a
+        %td
+          = relation.parent
+        %td
+          and has
+        %td
+          = attrs.map(&:characteristic).join(', ')
+          .pull-right
+            / = link_to 'Destroy', context, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs', style: "width: 75px"
+

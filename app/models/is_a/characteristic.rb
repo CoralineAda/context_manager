@@ -9,6 +9,15 @@ module IsA
 
     before_create :singularize_word
 
+    def self.for_category(category)
+      query_as(:w).
+      match(c:IsA::Category).
+      optional_match("(category:`IsA::Category`)-[HAS_CHARACTERISTIC]->(characteristic:`IsA::Characteristic`)").
+      where("category.name = '#{category.name}'").
+      return('DISTINCT characteristic').
+      map(&:characteristic)
+    end
+
     def singularize_word
       self.name = self.name.singularize
     end

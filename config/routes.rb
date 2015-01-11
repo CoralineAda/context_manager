@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   root 'gramercy/meta/contexts#index'
 
   resources :parsers
-  resources :definitions
+  namespace :is_a do
+    resources :categories
+  end
   namespace :gramercy do
     namespace :meta do
       resources :contexts

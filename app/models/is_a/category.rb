@@ -9,9 +9,23 @@ module IsA
 
     has_many :out, :children, model_class: IsA::Category, type: :has_child
     has_many :in, :parents, model_class: IsA::Category, type: :has_parent
-    has_many :both, :characteristics, model_class: IsA::Characteristic
+    has_many :both, :characteristics, model_class: IsA::Characteristic, type: :has_characteristic
 
     before_create :singularize_word
+
+    def self.characteristics_tree
+      query_as(:w).
+      match(c:IsA::Category).
+      optional_match("(category:`IsA::Category`)-[HAS_CHARACTERISTIC]->(characteristic:`IsA::Characteristic`)").
+      return('DISTINCT category.name AS category, characteristic.name AS characteristic')
+    end
+
+    def self.family_tree
+      query_as(:w).
+      match(c:IsA::Category).
+      optional_match("(parent:`IsA::Category`)-[HAS_CHILD]->(child:`IsA::Category`)").
+      return('DISTINCT parent.name AS parent, child.name AS child')
+    end
 
     def add_child(child)
       child.parents << self
@@ -50,7 +64,7 @@ module IsA
 
     def has?(characteristic)
       return unless characteristic.persisted?
-      self.characteristics.include? characteristic
+      IsA::Characteristic.for_category(self).to_a.include?(characteristic)
     end
 
     def has!(characteristic)
