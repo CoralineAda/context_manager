@@ -39,7 +39,7 @@ module IsA
 
     def is_a_child_of?(thing=self, category)
       return false if thing.parents.empty?
-      return true if thing.parents.where(name: category.name)
+      return true if thing.parents.detect{|parent| parent == category}
       thing.parents.detect{ |parent| is_a_child_of?(parent, category) }
     end
 

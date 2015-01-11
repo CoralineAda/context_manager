@@ -27,7 +27,7 @@ module IsA
       return "No, but they are both #{category.shared_parent(category).plural_name}." if subject.is_sibling?(category)
       return "Yes." if subject.is_a_child_of?(category)
       return "#{subject.plural_name} can sometimes be #{category.plural_name}." if category.has_a?(subject)
-      return "I don't know anything about #{category.plural_name}." unless category.children.any?
+      return "I don't think so, but I don't know that much about #{category.plural_name}." unless category.children.any?
       return "Some #{subject.plural_name} are #{category.plural_name}." if subject.has_a?(category)
       "I don't think so."
     end
