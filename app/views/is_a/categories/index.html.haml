@@ -20,11 +20,11 @@
           - else
             = relation.child.name
         %td
-          is a
+          is
         %td
           = relation.parent.name
         %td
-          and has
+          has
         %td
           = attrs.map(&:characteristic).join(', ')
           .pull-right

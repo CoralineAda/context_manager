@@ -54,7 +54,9 @@ module IsA
     end
 
     def set_category
-      subject.is_a! category
+      categories.each do |category|
+        subject.is_a! category
+      end
       "Got it."
     end
 
@@ -87,6 +89,10 @@ module IsA
       is_category_question? || is_characteristic_question?
     end
 
+    def adjectives
+      @adjectives ||= sentence_parser.adjectives
+    end
+
     def nouns
       @nouns ||= sentence_parser.nouns
     end
@@ -97,6 +103,7 @@ module IsA
 
     def create_root_from(category_name)
       return unless category_name
+      return unless sentence_parser.contexts.any?
       return if Gramercy::Meta::Root.find_by(base_form: category_name)
       root = Gramercy::Meta::Root.create!(base_form: category_name)
       sentence_parser.contexts.each{ |context| context.add_expression(root) }
@@ -110,12 +117,18 @@ module IsA
     end
 
     def category
+      [categories].flatten.first
+    end
+
+    def categories
       return unless singularized_nouns.any?
       return if singularized_nouns.detect{|n| n.nil? }
       if is_question?
         Category.where(name: singularized_nouns.last).last || Category.new(name: nouns.last)
       else
-        Category.find_or_create_by(name: singularized_nouns.last)
+        ([singularized_nouns.last] + adjectives).map do |trait|
+          Category.find_or_create_by(name: trait)
+        end
       end
     end
 

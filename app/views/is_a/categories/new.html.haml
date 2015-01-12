@@ -4,8 +4,9 @@
 .well
   = form_for(@parser, url: is_a_categories_path) do |f|
     .form-group
-      %label Enter a statement or question:
+      %label Enter a question, or one or more statements:
       = f.text_field :text, placeholder: 'sentence', class: "form-control"
+    %br.clear
     .form-group
       %label Response:
       %p.form-control
