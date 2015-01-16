@@ -5,7 +5,7 @@ module IsA
 
     def initialize(text="")
       @sentences = text.downcase.gsub(/\.|\?|\!|\;/, "\\&\n").lines.map(&:strip)
-      @text      = @sentences.first
+      @text = @sentences.first
       process_sentences if @sentences.length > 1
     end
 
@@ -42,9 +42,8 @@ module IsA
     end
 
     def characteristic_answer
-      return "Yes." if subject.has?(characteristic)
+      return "Yes." if subject.has?(characteristic) || subject.any_parent_has?(characteristic)
       return "#{subject.name.pluralize.capitalize} sometimes do." if subject.any_child_has?(characteristic)
-      return "It might." if subject.any_parent_has?(characteristic)
       "Not as far as I know."
     end
 
