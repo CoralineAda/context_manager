@@ -4,14 +4,15 @@
 %table.table.table-striped.datatable
   %thead
     %tr
-      %th Child
-      %th
-      %th Parent
-      %th
-      %th Characteristic
+      %th Object
+      %th Category
+      %th Characteristics
+      %th Descriptors
   %tbody
     - @family_tree.each do |relation|
       - attrs = @characteristics.select do |pair|
+        - pair.category == relation.child.name
+      - descriptors = @descriptors.select do |pair|
         - pair.category == relation.child.name
       %tr
         %td
@@ -20,13 +21,8 @@
           - else
             = relation.child.name
         %td
-          is
-        %td
           = relation.parent.name
         %td
-          has
-        %td
           = attrs.map(&:characteristic).join(', ')
-          .pull-right
-            / = link_to 'Destroy', context, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs', style: "width: 75px"
-
+        %td
+          = descriptors.map(&:descriptor).join(', ')

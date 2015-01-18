@@ -10,6 +10,7 @@ module IsA
     has_many :out, :children, model_class: IsA::Category, type: :has_child
     has_many :in, :parents, model_class: IsA::Category, type: :has_parent
     has_many :both, :characteristics, model_class: IsA::Characteristic, type: :has_characteristic
+    has_many :both, :descriptors, model_class: IsA::Descriptor, type: :has_descriptor
 
     before_create :singularize_word
 
@@ -18,6 +19,13 @@ module IsA
       match(c:IsA::Category).
       optional_match("(category:`IsA::Category`)-[HAS_CHARACTERISTIC]->(characteristic:`IsA::Characteristic`)").
       return('DISTINCT category.name AS category, characteristic.name AS characteristic')
+    end
+
+    def self.descriptors_tree
+      query_as(:w).
+      match(c:IsA::Category).
+      optional_match("(category:`IsA::Category`)-[HAS_DESCRIPTOR]->(descriptor:`IsA::Descriptor`)").
+      return('DISTINCT category.name AS category, descriptor.name AS descriptor')
     end
 
     def self.family_tree
@@ -60,7 +68,7 @@ module IsA
 
     def any_parent_has?(category=self, characteristic)
       return false unless self.parents.any?
-      self.parents.detect{|p| p.has?(characteristic) || p.any_child_has?(p, characteristic)}
+      self.parents.detect{|p| p.has?(characteristic) || p.any_parent_has?(p, characteristic)}
     end
 
     def is_a!(category)
@@ -82,6 +90,15 @@ module IsA
 
     def has!(characteristic)
       self.characteristics << characteristic
+    end
+
+    def describe!(descriptor)
+      self.descriptors << descriptor
+    end
+
+    def describe?(descriptor)
+      return unless descriptor.persisted?
+      IsA::Descriptor.for_category(self).to_a.include?(descriptor)
     end
 
     def is_sibling?(category)

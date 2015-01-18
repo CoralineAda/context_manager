@@ -16,6 +16,7 @@ module IsA
       response_text ||= unset_category if is_category_undefinition?
       response_text ||= set_category if is_category_definition?
       response_text ||= category_answer if is_category_question?
+      response_text ||= set_descriptors
       response_text
     end
 
@@ -53,15 +54,20 @@ module IsA
     end
 
     def set_category
-      categories.each do |category|
-        subject.is_a! category
-      end
+      return unless category
+      set_descriptors
+      subject.is_a! category
       "Got it."
     end
 
     def set_characteristic
       subject.has! characteristic
       "I'll remember that."
+    end
+
+    def set_descriptors
+      descriptors.each{ |descriptor| subject.describe! descriptor }
+      "Okay."
     end
 
     def is_characteristic_question?
@@ -116,26 +122,27 @@ module IsA
     end
 
     def category
-      [categories].flatten.first
+      return unless sentence_parser.object
+      if is_question?
+        Category.where(name: sentence_parser.object).last || Category.new(name: sentence_parser.object)
+      else
+        Category.find_or_create_by(name: sentence_parser.object)
+      end
     end
 
-    def categories
-      return unless singularized_nouns.any?
-      return if singularized_nouns.detect{|n| n.nil? }
-      if is_question?
-        Category.where(name: singularized_nouns.last).last || Category.new(name: nouns.last)
-      else
-        ([singularized_nouns.last] + adjectives).map do |trait|
-          Category.find_or_create_by(name: trait)
+    def descriptors
+      unless is_question?
+        adjectives.map do |descriptor|
+          Descriptor.find_or_create_by(name: descriptor)
         end
       end
     end
 
     def characteristic
       if is_question?
-        Characteristic.where(name: singularized_nouns.last).last || Characteristic.new(name: nouns.last)
+        Characteristic.where(name: sentence_parser.predicate.singularize).last || Characteristic.new(name: sentence_parser.predicate)
       else
-        Characteristic.find_or_create_by(name: singularized_nouns.last)
+        Characteristic.find_or_create_by(name: sentence_parser.predicate)
       end
     end
 
