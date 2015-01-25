@@ -1,5 +1,8 @@
 %h1
-  roots
+  - if @formless
+    roots queue
+  - else
+    roots
   .pull-right.small
     #{@roots.count} items
 
@@ -16,14 +19,15 @@
       %th
   %tbody
     - @roots.each do |root|
+      - with_forms = @roots_with_forms[root.base_form]
+      - next if @formless && with_forms
       %tr
         %td
           = link_to root.base_form, root
         %td
           = @roots_with_contexts[root.base_form].join(', ')
         %td
-          - if with_forms = @roots_with_forms[root.base_form]
-            = with_forms.join(", ")
+          = with_forms.to_a.join(", ")
         %td
           .pull-right
             = link_to 'Destroy', root, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-xs'

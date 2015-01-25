@@ -9,13 +9,13 @@ module IsA
 
     def create
       @parser = Definition.new(sentence_params[:text])
-      @grammar_parser = @parser.parser.sentence_parser
+      @isa_parser = @parser.parser#.sentence_parser
       render :new
     end
 
     def new
-      @parser = Definition.new("Is a cat an animal?")
-      @grammar_parser = @parser.parser.sentence_parser
+      @parser = Definition.new("Is a cat an animal? Does a cat have fur?")
+      @isa_parser = @parser.parser
     end
 
     private

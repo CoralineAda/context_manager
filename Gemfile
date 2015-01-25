@@ -20,9 +20,12 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 group :development, :test do
+  gem 'approvals'
   gem 'byebug'
+  gem 'database_cleaner'
   gem 'web-console', '~> 2.0'
   gem 'spring'
   gem 'pry', require: true
-  gem 'rspec-rails'
+  gem 'rspec', require: false
+  gem 'simplecov'
 end

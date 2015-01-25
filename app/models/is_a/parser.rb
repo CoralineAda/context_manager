@@ -7,6 +7,7 @@ module IsA
       @sentences = text.downcase.gsub(/\.|\?|\!|\;/, "\\&\n").lines.map(&:strip)
       @text = @sentences.first
       process_sentences if @sentences.length > 1
+      parser_stack << self
     end
 
     def response
@@ -20,9 +21,14 @@ module IsA
       response_text
     end
 
+    def parser_stack
+      @parser_stack ||= []
+    end
+
     def process_sentences
       self.sentences[1..-1].each do |sentence|
-        IsA::Parser.new(sentence).response
+        parser_stack << IsA::Parser.new(sentence)
+        parser_stack.last.response
       end
     end
 
@@ -140,9 +146,9 @@ module IsA
 
     def characteristic
       if is_question?
-        Characteristic.where(name: sentence_parser.predicate.singularize).last || Characteristic.new(name: sentence_parser.predicate)
+        Characteristic.where(name: sentence_parser.object.singularize).last || Characteristic.new(name: sentence_parser.object)
       else
-        Characteristic.find_or_create_by(name: sentence_parser.predicate)
+        Characteristic.find_or_create_by(name: sentence_parser.object)
       end
     end
 
