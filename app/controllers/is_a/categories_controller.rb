@@ -9,7 +9,7 @@ module IsA
 
     def create
       @parser = Definition.new(sentence_params[:text])
-      @isa_parser = @parser.parser#.sentence_parser
+      @isa_parser = @parser.parser
       render :new
     end
 
