@@ -17,6 +17,7 @@ module IsA
       response_text ||= unset_category if is_category_undefinition?
       response_text ||= set_category if is_category_definition?
       response_text ||= category_answer if is_category_question?
+      response_text ||= definition if is_definition_question?
       response_text ||= set_descriptors
       response_text
     end
@@ -33,7 +34,7 @@ module IsA
     end
 
     def sentence_parser
-      Gramercy::Grammar::Parser.new(self.text)
+      @sentence_parser ||= Gramercy::Grammar::Parser.new(self.text)
     end
 
     private
@@ -52,6 +53,10 @@ module IsA
       return "Yes." if subject.has?(characteristic) || subject.any_parent_has?(characteristic)
       return "#{subject.name.pluralize.capitalize} sometimes do." if subject.any_child_has?(characteristic)
       "Not as far as I know."
+    end
+
+    def definition
+      return "#{subject.pluralize} are #{subject.parents.first.name.pluralize}."
     end
 
     def unset_category
@@ -90,6 +95,10 @@ module IsA
 
     def is_category_question?
       text =~ /^is.+\?$/
+    end
+
+    def is_definition_question?
+      sentence_parser.interrogative
     end
 
     def is_category_definition?
