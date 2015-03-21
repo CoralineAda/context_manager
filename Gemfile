@@ -26,6 +26,6 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'spring'
   gem 'pry', require: true
-  gem 'rspec', require: false
+  gem 'rspec-rails', '~> 3.1'
   gem 'simplecov'
 end

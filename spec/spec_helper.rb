@@ -5,7 +5,6 @@ SimpleCov.start do
 end
 
 require 'rubygems'
-require 'rspec'
 require 'database_cleaner'
 require 'rake'
 require 'gramercy'
@@ -23,10 +22,8 @@ RSpec.configure do |config|
   end
 
   def delete_all
-    Gramercy::Meta::Root.destroy_all
-    Gramercy::Meta::Context.destroy_all
-    Gramercy::PartOfSpeech::Generic.destroy_all
-    Gramercy::PartOfSpeech::Property.destroy_all
+    IsA::Category.destroy_all
+    IsA::Characteristic.destroy_all
   end
 
   config.before(:each) do |example|

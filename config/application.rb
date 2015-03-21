@@ -15,7 +15,7 @@ require 'dotenv'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module ContextManager
+module GramercyManager
   class Application < Rails::Application
 
     config.generators do |g|
