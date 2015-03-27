@@ -1,3 +1,6 @@
+# Characteristics are distinct from components, as they express some descriptor
+# of a thing (e.g. color or size) as opposed to things that are a *part* of 
+# something (e.g. tires or steering wheels).
 module IsA
   class Characteristic
 

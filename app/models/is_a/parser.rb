@@ -14,6 +14,8 @@ module IsA
       response_text = "I don't know what you mean." unless nouns.compact.size > 1
       response_text ||= set_characteristic if is_characteristic_definition?
       response_text ||= characteristic_answer if is_characteristic_question?
+      response_text ||= set_component if is_component_definition?
+      response_text ||= component_answer if is_component_question?
       response_text ||= unset_category if is_category_undefinition?
       response_text ||= set_category if is_category_definition?
       response_text ||= category_answer if is_category_question?
@@ -55,6 +57,12 @@ module IsA
       "Not as far as I know."
     end
 
+    def component_answer
+      return "Yep!" if subject.composed_of?(component) || subject.any_parent_composed_of?(component)
+      return "Well, #{subject.name.pluralize.capitalize} sometimes do." if subject.any_child_composed_of?(component)
+      "Hmm, not as far as I know."
+    end
+
     def definition
       return "#{subject.pluralize} are #{subject.parents.first.name.pluralize}."
     end
@@ -76,25 +84,46 @@ module IsA
       "I'll remember that."
     end
 
+    def set_component
+      subject.composed_of! component
+      "Cool!"
+    end
+
     def set_descriptors
       descriptors.each{ |descriptor| subject.describe! descriptor }
       "Okay."
     end
 
+    # HERE working on these methods... may need something more sophisticated?
+
+    # Is a dog yellow?
     def is_characteristic_question?
-      text =~ /^does.+\?$/
+      text =~ /^is\b.+\?$/
     end
 
+    # An egg is ovoid.
     def is_characteristic_definition?
-      text =~ /\bhas\b/
+      text =~ /\bis\b/
     end
 
+    # A dog is not a cat.
     def is_category_undefinition?
-      text =~/\bis not\b/
+      text =~/\bis not\b/ || text =~ /\bisn't\b/
     end
 
+    # Is an egg an animal?
     def is_category_question?
-      text =~ /^is.+\?$/
+      !!(text =~ /^(is|was) (the|a)/)
+    end
+
+    # Does a dog have legs?
+    def is_component_question?
+      text =~ /^(do|does).+(have|has)/
+    end
+
+    # A wagon has wheels.
+    def is_component_definition?
+      text =~ /.+\bhas/
     end
 
     def is_definition_question?
@@ -150,6 +179,14 @@ module IsA
         adjectives.map do |descriptor|
           Descriptor.find_or_create_by(name: descriptor)
         end
+      end
+    end
+
+    def component
+      if is_question?
+        Component.where(name: sentence_parser.object.singularize).last || Component.new(name: sentence_parser.object)
+      else
+        Component.find_or_create_by(name: sentence_parser.object)
       end
     end
 

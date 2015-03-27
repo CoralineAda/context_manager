@@ -11,6 +11,7 @@ module IsA
     has_many :in, :parents, model_class: IsA::Category, type: :has_parent
     has_many :both, :characteristics, model_class: IsA::Characteristic, type: :has_characteristic
     has_many :both, :descriptors, model_class: IsA::Descriptor, type: :has_descriptor
+    has_many :both, :components, model_class: IsA::Component, type: :has_component
 
     before_create :singularize_word
 
@@ -66,9 +67,19 @@ module IsA
       self.children.detect{|c| c.has?(characteristic) || c.any_child_has?(c, characteristic)}
     end
 
+    def any_child_composed_of?(category=self, component)
+      return false unless self.children.any?
+      self.children.detect{|c| c.composed_of?(component) || c.any_child_composed_of?(c, component)}
+    end
+
     def any_parent_has?(category=self, characteristic)
       return false unless self.parents.any?
       self.parents.detect{|p| p.has?(characteristic) || p.any_parent_has?(p, characteristic)}
+    end
+
+    def any_parent_composed_of?(category=self, component)
+      return false unless self.parents.any?
+      self.parents.detect{|p| p.composed_of?(component) || p.any_parent_composed_of?(p, component)}
     end
 
     def is_a!(category)
@@ -81,6 +92,15 @@ module IsA
 
     def connected?
       self.parents.any? || self.children.any?
+    end
+
+    def composed_of?(component)
+      return unless component.persisted?
+      IsA::Component.part_of(self).to_a.include?(component)
+    end
+
+    def composed_of!(component)
+      self.components << component
     end
 
     def has?(characteristic)
