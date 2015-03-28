@@ -42,18 +42,25 @@ describe "IsA::Parser" do
     end
 
     describe "detects a component question" do
-      it "like 'Does a cat have legs?" do
+      it "like 'Does a cat have legs?'" do
         parser = IsA::Parser.new("Does a cat have legs?")
+        expect(parser.send(:is_component_question?)).to be_truthy
+      end
+      it "like 'Do cats have legs?'" do
+        parser = IsA::Parser.new("Do cats have legs?")
         expect(parser.send(:is_component_question?)).to be_truthy
       end
     end
 
     describe "detects a component definition" do
-      it "like 'A cat has fur." do
+      it "like 'A cat has fur.'" do
         parser = IsA::Parser.new("A cat has fur.")
         expect(parser.send(:is_component_definition?)).to be_truthy
       end
-
+      it "like 'The cat has fur.'" do
+        parser = IsA::Parser.new("The cat has fur.")
+        expect(parser.send(:is_component_definition?)).to be_truthy
+      end
     end
 
   end
