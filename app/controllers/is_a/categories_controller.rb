@@ -4,7 +4,6 @@ module IsA
     def index
       @family_tree = IsA::Category.family_tree.to_a
       @characteristics = IsA::Category.characteristics_tree.to_a
-      @descriptors = IsA::Category.descriptors_tree.to_a
       @components = IsA::Category.components_tree.to_a
     end
 

@@ -11,16 +11,15 @@ module IsA
     end
 
     def response
-      response_text = "I don't know what you mean." unless nouns.compact.size > 1
+      response_text ||= set_category if is_category_definition?
       response_text ||= set_characteristic if is_characteristic_definition?
       response_text ||= characteristic_answer if is_characteristic_question?
       response_text ||= set_component if is_component_definition?
       response_text ||= component_answer if is_component_question?
       response_text ||= unset_category if is_category_undefinition?
-      response_text ||= set_category if is_category_definition?
       response_text ||= category_answer if is_category_question?
       response_text ||= definition if is_definition_question?
-      response_text ||= set_descriptors
+      response_text ||= "I don't know what you mean."
       response_text
     end
 
@@ -53,7 +52,7 @@ module IsA
 
     def characteristic_answer
       return "Yes." if subject.has?(characteristic) || subject.any_parent_has?(characteristic)
-      return "#{subject.name.pluralize.capitalize} sometimes do." if subject.any_child_has?(characteristic)
+      return "Some are." if subject.any_child_has?(characteristic)
       "Not as far as I know."
     end
 
@@ -76,13 +75,12 @@ module IsA
 
     def set_category
       return unless category
-      set_descriptors
       subject.is_a! category
       "Got it."
     end
 
     def set_characteristic
-      subject.has! characteristic
+      subject.describe! characteristic
       "I'll remember that."
     end
 
@@ -91,21 +89,16 @@ module IsA
       "Cool!"
     end
 
-    def set_descriptors
-      descriptors.each{ |descriptor| subject.describe! descriptor }
-      "Okay."
-    end
-
     # HERE working on these methods... may need something more sophisticated?
 
     # Is a dog yellow?
     def is_characteristic_question?
-      text =~ /^is\b.+\b(a|an)\b\?$/
+      text =~ /^is (a|an)/
     end
 
     # An egg is ovoid.
     def is_characteristic_definition?
-      text =~ /.+\bis\ba/
+      text =~ /.+\b(is|are) [^(a|an)]/
     end
 
     # A dog is not a cat.
@@ -115,7 +108,7 @@ module IsA
 
     # Is an egg an animal?
     def is_category_question?
-      !!(text =~ /^(is|was) (the|a)/)
+      !!(text =~ /^(is|was) (the|a) .+ (the|a)/)
     end
 
     # Does a dog have legs?
@@ -133,7 +126,7 @@ module IsA
     end
 
     def is_category_definition?
-      ! is_category_question? && ! is_characteristic_definition? && ! is_characteristic_question?
+      text =~/.+\b(is|are) (a|an)/
     end
 
     def is_question?
@@ -162,9 +155,11 @@ module IsA
 
     def subject
       return if singularized_nouns.detect{|n| n.nil? }
-      category = Category.find_or_create_by(name: singularized_nouns.first)
-      create_root_from(category.name)
-      category
+      @subject ||= begin
+        category = Category.find_or_create_by(name: singularized_nouns.first)
+        create_root_from(category.name)
+        category
+      end
     end
 
     def category
@@ -173,14 +168,6 @@ module IsA
         Category.where(name: sentence_parser.object).last || Category.new(name: sentence_parser.object)
       else
         Category.find_or_create_by(name: sentence_parser.object)
-      end
-    end
-
-    def descriptors
-      unless is_question?
-        adjectives.map do |descriptor|
-          Descriptor.find_or_create_by(name: descriptor)
-        end
       end
     end
 
@@ -196,7 +183,7 @@ module IsA
       if is_question?
         Characteristic.where(name: sentence_parser.object.singularize).last || Characteristic.new(name: sentence_parser.object)
       else
-        Characteristic.find_or_create_by(name: sentence_parser.object)
+        Characteristic.find_or_create_by(name: sentence_parser.adjectives.last || sentence_parser.object)
       end
     end
 
