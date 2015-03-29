@@ -22,6 +22,13 @@ module IsA
       return('DISTINCT category.name AS category, characteristic.name AS characteristic')
     end
 
+    def self.components_tree
+      query_as(:w).
+      match(c:IsA::Category).
+      optional_match("(category:`IsA::Category`)-[HAS_COMPONENT]->(component:`IsA::Component`)").
+      return('DISTINCT category.name AS category, component.name AS component')
+    end
+
     def self.descriptors_tree
       query_as(:w).
       match(c:IsA::Category).

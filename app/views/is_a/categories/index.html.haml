@@ -7,13 +7,16 @@
       %th Object
       %th Category
       %th Characteristics
+      %th Components
       %th Descriptors
   %tbody
     - @family_tree.each do |relation|
       - attrs = @characteristics.select do |pair|
+        - pair.category == relation.child
+      - components = @components.select do |pair|
         - pair.category == relation.child.name
       - descriptors = @descriptors.select do |pair|
-        - pair.category == relation.child.name
+        - pair.category == relation.child
       %tr
         %td
           - if root = relation.child.associated_root
@@ -24,5 +27,7 @@
           = relation.parent.name
         %td
           = attrs.map(&:characteristic).join(', ')
+        %td
+          = components.map(&:component).join(', ')
         %td
           = descriptors.map(&:descriptor).join(', ')

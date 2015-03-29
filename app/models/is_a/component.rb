@@ -25,5 +25,9 @@ module IsA
       self.name = self.name.singularize
     end
 
+    def ==(other)
+      self.name == other.name
+    end
+
   end
 end

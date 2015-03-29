@@ -59,7 +59,9 @@ module IsA
 
     def component_answer
       return "Yep!" if subject.composed_of?(component) || subject.any_parent_composed_of?(component)
-      return "Well, #{subject.name.pluralize.capitalize} sometimes do." if subject.any_child_composed_of?(component)
+      if child = subject.any_child_composed_of?(component)
+        return "Some #{subject.name.pluralize} do. Like #{child.name.pluralize}, for example."
+      end
       "Hmm, not as far as I know."
     end
 
@@ -98,12 +100,12 @@ module IsA
 
     # Is a dog yellow?
     def is_characteristic_question?
-      text =~ /^is\b.+\?$/
+      text =~ /^is\b.+\b(a|an)\b\?$/
     end
 
     # An egg is ovoid.
     def is_characteristic_definition?
-      text =~ /\bis\b/
+      text =~ /.+\bis\ba/
     end
 
     # A dog is not a cat.
